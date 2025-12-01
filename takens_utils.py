@@ -227,3 +227,30 @@ def compare_diagnostics(sol, y, y_pc, fs, ells_full = np.logspace(-3.5,-2.5, 100
     
     computeCorrDim(data_cd.T, ells_delay, el_to_fit, axCenter[1])
     return fig
+
+def plot_forced_system_at_t(tcurr, tsurf0, dt,  ax, y_surf, y_orbit, y_vdp_forced,U, dim_plot =2,len_XX = 100):
+    y_surf_plot = np.reshape(np.array(y_surf)[:,:, tcurr].T, (-1, len_XX, len_XX))
+    if dim_plot==3:
+        ax.plot_surface(*np.tensordot(U[:,:dim_plot].T,y_surf_plot, axes = (-1,0)), 
+                        color = 'lavender', alpha=0.5)
+
+    if dim_plot == 2:
+        ax.plot_surface(*np.tensordot(U[:,:dim_plot].T,y_surf_plot, axes = (-1,0)), np.zeros((len_XX, len_XX)),
+                         color = 'lavender', alpha=0.5)
+
+
+    ax.plot(*np.dot(U[:,:dim_plot].T,np.array(y_orbit)[:, :,tcurr].T), color = 'slateblue')
+
+    ax.plot(*np.dot(U[:,:dim_plot].T,y_vdp_forced[0][:,tsurf0+tcurr]), 'X', markersize = 10)
+
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_zticks([])
+
+    ax.set_xlabel('$x(t)$')
+    ax.set_ylabel('$x(t) + dt$')
+    ax.set_zlabel('$x(t) + 2dt$')
+
+    ax.set_title('$t = %s \ s$'%(round(tcurr*dt+ tsurf0*dt, 4)))
+
+    return ax
