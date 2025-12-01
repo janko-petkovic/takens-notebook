@@ -184,8 +184,8 @@ def plot_traj(sol_pc, y_pc, subfig, proj = '3d'):
     if proj=='3d':
         axLeft = subfig.add_subplot(1,2,1, projection = '3d')
         axRight = subfig.add_subplot(1,2,2, projection = '3d')
-    axLeft.plot(*sol_pc[:, ], color = 'black')
-    axRight.plot(*y_pc[:, ], color = 'black')
+    axLeft.plot(*sol_pc[:, ],'-', color = 'black')
+    axRight.plot(*y_pc[:, ], '-',color = 'black')
     
     for ax in [axLeft, axRight]:
             ax.xaxis.set_major_locator(MaxNLocator(nbins=3))
